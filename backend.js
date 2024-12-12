@@ -145,7 +145,7 @@ function wonder() {
     p.splice(random, 1);
 }
 
-function again() {
+function restart() {
     p = data;
     
     document.getElementById("Wonder").style.display = "block";
