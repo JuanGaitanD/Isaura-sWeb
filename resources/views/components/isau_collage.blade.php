@@ -1,0 +1,1 @@
+<img src="{{ asset('img/ISAU_COLLAGE.jpg') }}" alt="No se ha encontrado la imagen">
