@@ -13,7 +13,19 @@ Route::get('/textos', function () {
     return view('home/textos');
 })->name('textos');
 
-Route::get('/wonder', [textos::class, 'show'])->name('wonder');
+Route::get('/textos/get', [textos::class, 'get'])->name('textos.get');
+
+Route::get('/wonder', function () {
+    return view('home/wonder_text');
+})->name('wonder');
+
+Route::get('/wonder/get', [textos::class, 'show'])->name('wonder.get');
+
+Route::get('/texto/{id}', [textos::class, 'show_one'])->name('textos.show_one');
+
+Route::get('/proximamente', function () {
+    return view('home/proximamente');
+})->name('proximamente');
 
 
 // Login

@@ -48,13 +48,14 @@
                     case "home":
                         @endphp
                         <h1h class="text-pink-400 text-2xl font-cursive">
-                            <b>Isaura's Web <a href="{{ route('login') }}">🌼</a></b>
+                            <b><a href="{{ route('home') }}">Isaura's Web</a> <a href="{{ route('login') }}">🌼</a></b>
                         </h1h>
 
                         <div class="hidden md:flex space-x-4">
                             <a href="{{ route('home') }}" class="text-pink-500 hover:text-pink-600">Inicio</a>
-                            <a href="{{ route('textos') }}" class="text-pink-500 hover:text-pink-600">Textos</a>
-                            <a href="#" class="text-pink-500 hover:text-pink-600">Galeria</a>
+                            <a href="{{ route('textos.get') }}" class="text-pink-500 hover:text-pink-600">Textos</a>
+                            <a href="{{ route('wonder') }}" class="text-pink-500 hover:text-pink-600">Wonder</a>
+                            <a href="{{ route('proximamente') }}" class="text-pink-500 hover:text-pink-600">Galeria</a>
                         </div>
                         <!-- Mobile menu button -->
                         <button class="md:hidden text-pink-500 hover:text-pink-600" onclick="toggleMenu()">
@@ -67,8 +68,9 @@
                         <div id="mobileMenu" class="hidden md:hidden absolute top-16 right-0 left-0 bg-yellow-100 p-4">
                             <div class="flex flex-col space-y-4">
                                 <a href="{{ route('home') }}" class="text-pink-500 hover:text-pink-600">Inicio</a>
-                                <a href="{{ route('textos') }}" class="text-pink-500 hover:text-pink-600">Textos</a>
-                                <a href="#" class="text-pink-500 hover:text-pink-600">Galeria</a>
+                                <a href="{{ route('textos.get') }}" class="text-pink-500 hover:text-pink-600">Textos</a>
+                                <a href="{{ route('wonder') }}" class="text-pink-500 hover:text-pink-600">Wonder</a>
+                                <a href="{{ route('proximamente') }}" class="text-pink-500 hover:text-pink-600">Galeria</a>
                             </div>
                         </div>
 

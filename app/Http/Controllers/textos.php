@@ -16,6 +16,13 @@ class textos extends Controller
         return view('dashboard/text', ['texto' => $texto]);
     }
 
+    public function get(){
+        $texto = textos_model::orderBy('created_at', 'desc')->get();
+        $texto = json_decode($texto);
+
+        return view('home/textos', ['texto' => $texto]);
+    }
+
     public function store(Request $request)
     {
         $data = $request->all();
@@ -47,7 +54,7 @@ class textos extends Controller
 
         if ($textos->count() == 0) {
             textos_model::where('usado', 1)->update(['usado' => 0]);
-            return view('home/textos', ['nota' => 1]);
+            return view('home/wonder_text', ['nota' => 1]);
         }
 
         $nota = $textos->random(1);
@@ -55,7 +62,18 @@ class textos extends Controller
 
         textos_model::where('id', $nota[0]->id)->update(['usado' => 1]);
 
-        return view('home/textos', ['nota' => $nota]);
+        return view('home/wonder_text', ['nota' => $nota]);
+    }
+
+    public function show_one($id)
+    {
+        $texto = textos_model::where('id', $id)->get();
+
+        if ($texto == null) {
+            return view('home/textos');
+        }
+
+        return view('home/single_note', ['texto' => json_decode($texto)]);
     }
 
     public function edit($id)
