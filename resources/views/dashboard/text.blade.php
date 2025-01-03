@@ -30,6 +30,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-pink-500 uppercase tracking-wider">Nombre</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-pink-500 uppercase tracking-wider">Fecha</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-pink-500 uppercase tracking-wider">Contenido</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-pink-500 uppercase tracking-wider">Imagen</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-pink-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
@@ -40,6 +41,13 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $text->titulo }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $text->fecha}}</td>
                                     <td class="px-6 py-4">{{ $text->contenido}}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if (isset($text->img))
+                                            <img src="{{ asset($text->img) }}" class="w-20 h-20 object-cover rounded-lg" alt="Imagen seleccionada">
+                                        @else
+                                            <p class="text-gray-400">No hay imagen seleccionada</p>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex space-x-2">
                                             <a href="{{ route('text.load_edit', ['id' => $text->id]) }}">
@@ -69,6 +77,10 @@
                                 <td class="px-6 py-4 whitespace-nowrap">DD/MM/YYYY</td>
                                 <td class="px-6 py-4">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus facilis iste eum expedita! Qui quas ipsa corrupti natus dolorem debitis vitae aliquid, deserunt minus molestias reprehenderit eius error facere cupiditate aperiam? Voluptatibus cupiditate, esse neque, earum voluptates at doloremque illo libero ex consequatur blanditiis unde, debitis vel et dolorem omnis.</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
+                                    <p class="text-gray-400">No hay imagen seleccionada</p>
+                                </td>
+
+                                <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex space-x-2">
                                         <button class="text-blue-500 hover:text-blue-700">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -96,18 +108,61 @@
             switch (n) {
                 case 1:
                     document.querySelector('#operaciones').innerHTML = `
-                        <form action="{{route('text.store')}}" method="POST">
+                        <form action="{{route('text.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <input type="text" name="titulo" class="w-full border-2 border-pink-300 rounded-lg p-2 mb-4" placeholder="Escribe aquí el nombre" required>
                             <input type="date" name="fecha" class="w-full border-2 border-pink-300 rounded-lg p-2 mb-4" required>
                             <textarea id="contentTextarea" name="contenido" class="w-full border-2 border-pink-300 rounded-lg p-2 mb-4" placeholder="Escribe aquí el contenido" oninput="adjustHeight(this)" required></textarea>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="relative mb-4 flex flex-col items-center justify-center">
+                                    <input type="file" 
+                                        name="img" 
+                                        accept="image/*" 
+                                        class="block w-full text-sm text-pink-500
+                                            file:mr-4 file:py-2 file:px-4
+                                            file:rounded-full file:border-0
+                                            file:text-sm file:font-semibold
+                                            file:bg-pink-100 file:text-pink-500
+                                            hover:file:bg-pink-200
+                                            border-2 border-pink-300 rounded-lg p-2"
+                                        >
+                                    <p class="mt-1 text-sm text-gray-500">Máximo 10MB</p>
+                                </div>
+
+                                <div class="mt-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Vista previa:</label>
+                                    <div id="imagePreview" class="w-full h-48 border-2 border-pink-300 rounded-lg flex items-center justify-center bg-gray-50">
+                                        <p class="text-gray-400">No hay imagen seleccionada</p>
+                                    </div>
+                                </div>
+                            </div>
                             
                             <button type="submit" class="bg-pink-300 text-white px-6 py-2 rounded-full hover:bg-pink-400 w-fit">
                                 Guardar
                             </button>
                         </form>
                     `;
+
+                    document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const size_image = 10;
+                            if (file.size > 1024 * 1024 * size_image) {
+                                alert('El archivo excede el tamaño permitido');
+                                e.target.value = '';
+                                return;
+                            }
+
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                document.getElementById('imagePreview').innerHTML = `
+                                    <img src="${event.target.result}" class="w-full h-full object-cover rounded-lg" alt="Imagen seleccionada">
+                                `;
+                            }
+                            reader.readAsDataURL(file);
+                        }
+                    });
                     break;
 
                 default:

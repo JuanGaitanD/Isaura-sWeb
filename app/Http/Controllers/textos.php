@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator as Validator;
+use Illuminate\Support\Facades\Log as Log;
 use App\Models\textos as textos_model;
 
 class textos extends Controller
 {
     public function index()
     {
-        $texto = textos_model::all();
+        $texto = textos_model::orderBy('created_at', 'desc')->get();
         $texto = json_decode($texto);
 
         return view('dashboard/text', ['texto' => $texto]);
@@ -25,27 +26,43 @@ class textos extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
+        try {
+            $data = $request->all();
 
-        $validator = Validator::make($data, [
-            'titulo' => 'required|string|max:255',
-            'fecha' => 'required|date',
-            'contenido' => 'required|string'
-        ]);
+            $validator = Validator::make($request->all(), [
+                'titulo' => 'required|string|max:255',
+                'fecha' => 'required|date',
+                'contenido' => 'required|string',
+            ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            if ($request->hasFile('img')) { 
+                $imageName = 'img-notes/' . time() . '.' . $data['titulo'] . '.' . $request->file('img')->extension();
+                $request->file('img')->move(public_path('img-notes/'), $imageName);
+            } else {
+                $imageName = null;
+            }
+
+            $result = textos_model::create([
+                'titulo' => $data['titulo'],
+                'fecha' => date('Y-m-d', strtotime($data['fecha'])),
+                'contenido' => $data['contenido'],
+                'img' => $imageName,
+            ]);
+
+            if ($result == null) {
+                return redirect()->back()->withErrors('Error al guardar el texto')->withInput();
+            }
+    
+            return redirect()->route('text.index');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors($e->getMessage())->withInput();
         }
-
-        textos_model::create([
-            'titulo' => $data['titulo'],
-            'fecha' => date('Y-m-d', strtotime($data['fecha'])),
-            'contenido' => $data['contenido'],
-        ]);
-
-        return redirect()->route('text.index');
     }
 
     public function show()
@@ -86,13 +103,48 @@ class textos extends Controller
     public function update(Request $request, $id)
     {
         $texto = textos_model::find($id);
-        $texto->update($request->all());
+
+        $validator = Validator::make($request->all(), [
+            'titulo' => 'required|string|max:255',
+            'fecha' => 'required|date',
+            'contenido' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        
+        if($request->hasFile('img')) {
+            $path = json_decode($texto)->img;
+            
+            if ($path != null) {
+                unlink(public_path($path));
+            };
+
+            $imageName = 'img-notes/' . time() . '.' . $request->titulo . '.' . $request->img->extension();
+            $request->file('img')->move(public_path('img-notes'), $imageName);
+        } else {
+            $imageName = json_decode($texto)->img;
+        }
+
+        $texto->update([
+            'titulo' => $request->titulo,
+            'fecha' => date('Y-m-d', strtotime($request->fecha)),
+            'contenido' => $request->contenido,
+            'img' => $imageName,
+        ]);
         return redirect()->route('text.index');
     }
 
     public function destroy($id)
     {
         $texto = textos_model::find($id);
+        $path = json_decode($texto)->img;
+        if ($path != null) {
+            unlink(public_path($path));
+        };
         $texto->delete();
         return redirect()->route('text.index');
     }

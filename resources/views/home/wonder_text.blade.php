@@ -50,9 +50,13 @@
                     </form>
                 </div>
                 <div class="flex justify-center items-center">
-                    <div class="hidden md:flex w-96 h-96 bg-white shadow-lg border-8 border-yellow-100 items-center justify-center">
+                    @if (isset($nota[0]->img))
+                        <div class="hidden md:flex w-96 bg-white shadow-lg border-8 border-yellow-100 rounded-lg items-center justify-center">
+                            <img src="{{ asset($nota[0]->img) }}" alt="imagen" class="object-cover rounded-lg" width="100%" height="100%">
+                        </div>
+                    @else
                         <x-isau_collage />
-                    </div>
+                    @endif
                 </div>
             </div>
         </main>

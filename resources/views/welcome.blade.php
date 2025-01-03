@@ -20,9 +20,7 @@
                     </a>    
                 </div>
                 <div class="flex justify-center items-center">
-                    <div class="w-96 h-96 bg-white shadow-lg border-8 border-yellow-100 flex items-center justify-center">
-                        <x-isau_collage />
-                    </div>
+                    <x-isau_collage />
                 </div>
             </div>
         </main>
