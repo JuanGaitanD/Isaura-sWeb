@@ -64,5 +64,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/text/store', [textos::class, 'store'])->name('text.store');
     Route::get('/dashboard/text/edit/{id}', [textos::class, 'edit'])->name('text.load_edit');
     Route::put('/dashboard/text/update/{id}', [textos::class, 'update'])->name('text.update');
+    Route::put('/dashboard/text/remove_img/{id}', [textos::class, 'destroy_img'])->name('text.remove_img');
     Route::delete('/dashboard/text/delete/{id}', [textos::class, 'destroy'])->name('text.delete');
 });

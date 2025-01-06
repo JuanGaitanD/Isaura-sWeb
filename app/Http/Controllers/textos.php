@@ -142,10 +142,32 @@ class textos extends Controller
     {
         $texto = textos_model::find($id);
         $path = json_decode($texto)->img;
+
         if ($path != null) {
             unlink(public_path($path));
         };
+
         $texto->delete();
+        return redirect()->route('text.index');
+    }
+
+    public function destroy_img($id) {
+        $text = textos_model::find($id);
+
+        // Obtenemos el path de la imagen
+        $path = json_decode($text)->img;
+
+        // Validamos la existencia del path
+        if ($path != null) {
+            // Eliminamos la imagen
+            unlink(public_path($path));
+        }
+
+        // Actualizamos la base de datos
+        $text->update([
+            'img' => null,
+        ]);
+
         return redirect()->route('text.index');
     }
 
