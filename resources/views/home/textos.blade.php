@@ -23,13 +23,7 @@
                     </a>
                 @else
                     @foreach($texto as $nota)
-                        <a href="{{ route('textos.show_one', ['id' => $nota-> id]) }}" class="transform transition duration-300 hover:scale-105">
-                            <div class="bg-pink-50 rounded-lg shadow-sm p-6 hover:shadow-md">
-                                <h3 class="text-xl text-pink-500 font-serif mb-2">{{ $nota->titulo }}</h3>
-                                <span class="text-gray-500 text-sm block mb-3">{{ $nota->fecha }}</span>
-                                <p class="text-gray-700 line-clamp-3">{{ $nota->contenido }}</p>
-                            </div>
-                        </a>
+                        <x-card_text :nota="$nota"/>
                     @endforeach
                 @endif
             </div>

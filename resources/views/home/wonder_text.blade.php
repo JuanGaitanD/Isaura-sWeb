@@ -11,6 +11,17 @@
                 <div class="flex flex-col justify-center px-6">
                     <h2 class="text-4xl text-pink-400 mb-1 font-serif">¡Wonder! de corazon ❤</h2>
                     <h3h class="text-gray-400 mb-6 text-l">Aquí podrás ver aleatoriamente frases, texto y demás que me hacen pensar en ti. Mi margarita 🌼✨</h3h>
+                    <hr class="my-6 border-t-2 border-pink-200">
+
+                    <div class="flex justify-center items-center">
+                        @if (isset($nota[0]->img))
+                            <div class="w-full md:hidden bg-white shadow-lg border-8 border-yellow-100 rounded-lg items-center justify-center mb-4">
+                                <img src="{{ asset($nota[0]->img) }}" alt="imagen" class="object-cover rounded-lg" width="100%" height="100%">
+                            </div>
+                        @else
+                            <x-isau_collage :mobile="true"/>
+                        @endif
+                    </div>
 
                     @if (isset($nota))
                         @if ($nota == 1)

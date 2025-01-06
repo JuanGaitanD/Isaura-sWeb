@@ -23,6 +23,12 @@ Route::get('/wonder/get', [textos::class, 'show'])->name('wonder.get');
 
 Route::get('/texto/{id}', [textos::class, 'show_one'])->name('textos.show_one');
 
+Route::get('/galeria/get', [textos::class, 'get_galeria'])->name('galeria.get');
+
+Route::get('/galeria', function () {
+    return view('home/galeria');
+})->name('galeria');
+
 Route::get('/proximamente', function () {
     return view('home/proximamente');
 })->name('proximamente');

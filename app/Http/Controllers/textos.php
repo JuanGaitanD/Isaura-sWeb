@@ -11,14 +11,14 @@ class textos extends Controller
 {
     public function index()
     {
-        $texto = textos_model::orderBy('created_at', 'desc')->get();
+        $texto = textos_model::select(['id', 'titulo', 'fecha', 'contenido', 'img'])->orderBy('created_at', 'desc')->get();
         $texto = json_decode($texto);
 
         return view('dashboard/text', ['texto' => $texto]);
     }
 
     public function get(){
-        $texto = textos_model::orderBy('created_at', 'desc')->get();
+        $texto = textos_model::select(['id', 'titulo', 'fecha', 'contenido', 'img'])->orderBy('created_at', 'desc')->get();
         $texto = json_decode($texto);
 
         return view('home/textos', ['texto' => $texto]);
@@ -67,7 +67,7 @@ class textos extends Controller
 
     public function show()
     {
-        $textos = textos_model::where('usado', 0)->get();
+        $textos = textos_model::select(['id', 'titulo', 'fecha', 'contenido', 'img'])->where('usado', 0)->get();
 
         if ($textos->count() == 0) {
             textos_model::where('usado', 1)->update(['usado' => 0]);
@@ -84,7 +84,7 @@ class textos extends Controller
 
     public function show_one($id)
     {
-        $texto = textos_model::where('id', $id)->get();
+        $texto = textos_model::select(['id', 'titulo', 'fecha', 'contenido', 'img'])->where('id', $id)->get();
 
         if ($texto == null) {
             return view('home/textos');
@@ -147,5 +147,13 @@ class textos extends Controller
         };
         $texto->delete();
         return redirect()->route('text.index');
+    }
+
+    public function get_galeria() {
+        $galeria = textos_model::select(['id','img'])->where('img', '!=', null)->orderBy('created_at', 'desc')->get();
+
+        $data = json_decode($galeria);
+
+        return view('home/galeria', ['galeria' => $data]);
     }
 }

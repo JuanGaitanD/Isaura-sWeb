@@ -13,7 +13,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 p-6 items-center">
-                <div class="bg-pink-50 rounded-lg p-6 shadow-md mb-6 flex items-center justify-between min-w-[300px] md:min-w-[400px] w-fit h-fit max-w-3xl">
+                <div class="bg-pink-50 rounded-lg p-6 shadow-md mb-6 flex items-center justify-between min-w-[200px] md:min-w-[400px] w-fit h-fit max-w-3xl">
                     @if (isset($texto))
                         <div>
                             <h3 class="text-xl text-pink-500 font-serif mb-2">{{ $texto[0]->titulo }}</h3>

@@ -55,7 +55,7 @@
                             <a href="{{ route('home') }}" class="text-pink-500 hover:text-pink-600">Inicio</a>
                             <a href="{{ route('textos.get') }}" class="text-pink-500 hover:text-pink-600">Textos</a>
                             <a href="{{ route('wonder') }}" class="text-pink-500 hover:text-pink-600">Wonder</a>
-                            <a href="{{ route('proximamente') }}" class="text-pink-500 hover:text-pink-600">Galeria</a>
+                            <a href="{{ route('galeria.get') }}" class="text-pink-500 hover:text-pink-600">Galeria</a>
                         </div>
                         <!-- Mobile menu button -->
                         <button class="md:hidden text-pink-500 hover:text-pink-600" onclick="toggleMenu()">
@@ -70,7 +70,7 @@
                                 <a href="{{ route('home') }}" class="text-pink-500 hover:text-pink-600">Inicio</a>
                                 <a href="{{ route('textos.get') }}" class="text-pink-500 hover:text-pink-600">Textos</a>
                                 <a href="{{ route('wonder') }}" class="text-pink-500 hover:text-pink-600">Wonder</a>
-                                <a href="{{ route('proximamente') }}" class="text-pink-500 hover:text-pink-600">Galeria</a>
+                                <a href="{{ route('galeria.get') }}" class="text-pink-500 hover:text-pink-600">Galeria</a>
                             </div>
                         </div>
 
